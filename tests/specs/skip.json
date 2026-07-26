@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/skip",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Skip to the next track in the queue"
+            }
+          }
+        ],
+        "send": {
+          "text": "/skip"
+        }
+      }
+    ]
+  }
+]
