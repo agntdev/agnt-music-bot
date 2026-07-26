@@ -1,20 +1,5 @@
 [
-  {
-    "name": "/skip",
-    "steps": [
-      {
-        "expect": [
-          {
-            "method": "sendMessage",
-            "payload": {
-              "text": "Skip to the next track in the queue"
-            }
-          }
-        ],
-        "send": {
-          "text": "/skip"
-        }
-      }
-    ]
-  }
+  { "name": "/skip stops when the queue is empty", "steps": [
+    { "send": { "text": "/skip" }, "expect": [{ "method": "sendMessage", "payload": { "text": "The queue is empty, so I stopped playback." } }] }
+  ] }
 ]

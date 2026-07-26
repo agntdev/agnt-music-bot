@@ -1,15 +1,16 @@
 import { Composer } from "grammy";
-
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-
-const composer = new Composer();
-
-composer.command("skip", async (ctx) => {
-  await ctx.reply("Skip to the next track in the queue");
-});
+import type { Ctx } from "../bot.js";
+import { musicState, trackLine } from "../music-state.js";
+const composer = new Composer<Ctx>();
+async function skip(ctx: Ctx, edit = false) {
+  const playback = musicState(ctx).playback;
+  const next = playback.queue.shift();
+  playback.current = next;
+  playback.status = next ? "playing" : "idle";
+  const text = next ? `Now playing: ${trackLine(next)}.` : "The queue is empty, so I stopped playback.";
+  if (edit) await ctx.editMessageText(text); else await ctx.reply(text);
+}
+composer.command("skip", async (ctx) => skip(ctx));
+composer.callbackQuery("music:skip", async (ctx) => { await ctx.answerCallbackQuery(); await skip(ctx, true); });
 
 export default composer;

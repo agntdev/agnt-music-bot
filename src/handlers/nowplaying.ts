@@ -1,15 +1,13 @@
 import { Composer } from "grammy";
-
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-
-const composer = new Composer();
-
-composer.command("nowplaying", async (ctx) => {
-  await ctx.reply("See what track is currently playing");
-});
+import type { Ctx } from "../bot.js";
+import { musicState, trackLine } from "../music-state.js";
+const composer = new Composer<Ctx>();
+async function nowPlaying(ctx: Ctx, edit = false) {
+  const playback = musicState(ctx).playback;
+  const text = playback.current ? `${playback.status === "paused" ? "Paused" : "Now playing"}: ${trackLine(playback.current)}.` : "Nothing is playing yet — tap Play music to choose a track.";
+  if (edit) await ctx.editMessageText(text); else await ctx.reply(text);
+}
+composer.command("nowplaying", async (ctx) => nowPlaying(ctx));
+composer.callbackQuery("music:now", async (ctx) => { await ctx.answerCallbackQuery(); await nowPlaying(ctx, true); });
 
 export default composer;

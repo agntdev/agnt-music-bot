@@ -1,20 +1,6 @@
 [
-  {
-    "name": "/adminpanel",
-    "steps": [
-      {
-        "expect": [
-          {
-            "method": "sendMessage",
-            "payload": {
-              "text": "Access the admin panel (requires password and approved account)"
-            }
-          }
-        ],
-        "send": {
-          "text": "/adminpanel"
-        }
-      }
-    ]
-  }
+  { "name": "/adminpanel asks for its password", "steps": [
+    { "send": { "text": "/adminpanel" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Enter the admin password to continue." } }] },
+    { "send": { "text": "wrong password" }, "expect": [{ "method": "sendMessage", "payload": { "text": "That password didn't match. Tap Admin panel to try again." } }] }
+  ] }
 ]
