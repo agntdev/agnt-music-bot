@@ -1,15 +1,16 @@
 import { Composer } from "grammy";
-
-// SCAFFOLD — generated from the bot blueprint BEFORE the agent runs.
-// Keep a LIVE registration (.command / .callbackQuery / …) so this feature is
-// never an empty stub. Replace the reply body with real logic + copy; if you
-// change the user-facing text, update tests/specs to match EXACTLY.
-// Do NOT rewrite src/bot.ts — buildBot() already auto-loads this module.
-
-const composer = new Composer();
-
-composer.command("pause", async (ctx) => {
-  await ctx.reply("Pause music playback");
-});
+import type { Ctx } from "../bot.js";
+import { inlineButton, inlineKeyboard } from "../toolkit/index.js";
+import { musicState } from "../music-state.js";
+const composer = new Composer<Ctx>();
+async function pause(ctx: Ctx, edit = false) {
+  const playback = musicState(ctx).playback;
+  const text = playback.status !== "playing" ? "Nothing is playing right now." : "Paused. Tap Resume when you're ready.";
+  if (playback.status === "playing") playback.status = "paused";
+  const options = { reply_markup: inlineKeyboard([[inlineButton("▶️ Resume", "music:resume")]]) };
+  if (edit) await ctx.editMessageText(text, options); else await ctx.reply(text, options);
+}
+composer.command("pause", async (ctx) => pause(ctx));
+composer.callbackQuery("music:pause", async (ctx) => { await ctx.answerCallbackQuery(); await pause(ctx, true); });
 
 export default composer;

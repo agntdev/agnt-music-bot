@@ -1,20 +1,8 @@
 [
-  {
-    "name": "/play",
-    "steps": [
-      {
-        "expect": [
-          {
-            "method": "sendMessage",
-            "payload": {
-              "text": "Start music playback in the current chat"
-            }
-          }
-        ],
-        "send": {
-          "text": "/play"
-        }
-      }
-    ]
-  }
+  { "name": "/play starts a requested track", "steps": [
+    { "send": { "text": "/play Midnight Drive" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Now playing: Midnight Drive.\n\nMusic playback is ready for the connected voice service." } }] }
+  ] },
+  { "name": "Play button asks for a track", "steps": [
+    { "send": { "callback": "music:play" }, "expect": [{ "method": "answerCallbackQuery" }, { "method": "editMessageText", "payload": { "text": "Send a YouTube or Spotify link, or type the song name after /play." } }] }
+  ] }
 ]

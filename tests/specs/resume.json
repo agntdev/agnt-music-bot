@@ -1,20 +1,5 @@
 [
-  {
-    "name": "/resume",
-    "steps": [
-      {
-        "expect": [
-          {
-            "method": "sendMessage",
-            "payload": {
-              "text": "Resume paused music playback"
-            }
-          }
-        ],
-        "send": {
-          "text": "/resume"
-        }
-      }
-    ]
-  }
+  { "name": "/resume handles no paused track", "steps": [
+    { "send": { "text": "/resume" }, "expect": [{ "method": "sendMessage", "payload": { "text": "There isn't a paused track to resume." } }] }
+  ] }
 ]

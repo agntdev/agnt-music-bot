@@ -1,20 +1,5 @@
 [
-  {
-    "name": "/pause",
-    "steps": [
-      {
-        "expect": [
-          {
-            "method": "sendMessage",
-            "payload": {
-              "text": "Pause music playback"
-            }
-          }
-        ],
-        "send": {
-          "text": "/pause"
-        }
-      }
-    ]
-  }
+  { "name": "/pause handles an idle chat", "steps": [
+    { "send": { "text": "/pause" }, "expect": [{ "method": "sendMessage", "payload": { "text": "Nothing is playing right now." } }] }
+  ] }
 ]
