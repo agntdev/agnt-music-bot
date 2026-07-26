@@ -1,0 +1,20 @@
+[
+  {
+    "name": "/adminpanel",
+    "steps": [
+      {
+        "expect": [
+          {
+            "method": "sendMessage",
+            "payload": {
+              "text": "Access the admin panel (requires password and approved account)"
+            }
+          }
+        ],
+        "send": {
+          "text": "/adminpanel"
+        }
+      }
+    ]
+  }
+]
